@@ -53,6 +53,20 @@ RUN pgxnclient install json_enhancements
 
 RUN sudo apt-get install -y haproxy
 
+### POSTGIS
+
+RUN apt-get install -y libproj-dev libgeos-dev libxml2-dev libjson-c-dev libgdal-dev
+WORKDIR /root
+RUN wget http://download.osgeo.org/postgis/source/postgis-2.0.6.tar.gz
+WORKDIR /root
+RUN tar xvzf postgis-2.0.6.tar.gz
+WORKDIR /root/postgis-2.0.6
+RUN ./configure --prefix /opt/pgxl --with-sysroot=/root/pgxl/ --with-pgconfig=/root/pgxl/src/bin/pg_config/pg_config
+WORKDIR /root/postgis-2.0.6
+RUN make -j 4
+WORKDIR /root/postgis-2.0.6
+RUN make install
+
 ### LD
 
 RUN echo "/usr/local/lib" >> /etc/ld.so.conf
